@@ -1,9 +1,15 @@
 segger export
 ==============
 
-Positional arguments select which elements to write: ``anndata``, ``transcripts``,
-``boundaries``, ``spatialdata`` (default: ``anndata boundaries``). Run ``segger export --help``
-for the authoritative list.
+Positional arguments select which elements to write (default: ``anndata boundaries``):
+
+- ``anndata`` — cell x gene table (``adata.h5ad``), obs indexed by cell id.
+- ``transcripts`` — per-transcript cell assignments (``transcripts.parquet``), post-filtering.
+- ``boundaries`` — one polygon per cell (``cell_boundaries.parquet``), GeoParquet.
+- ``spatialdata`` — adds the above elements into an existing SpatialData Zarr store.
+
+For SOPA, ``anndata`` + ``boundaries`` (the default) is enough. Run ``segger export --help`` for
+the authoritative list.
 
 .. list-table::
    :header-rows: 1
@@ -13,18 +19,20 @@ for the authoritative list.
      - Description
    * - ``-s, --segmentation-path``
      - *required*
-     - Path to ``segger_segmentation.parquet``.
+     - Path to ``segger_segmentation.parquet``, written by ``segger segment`` (see :doc:`outputs`).
    * - ``-i, --source-path``
      - None
-     - Source transcripts directory. Only needed for segger v0.2.0 outputs, which predate inline
-       ``x``/``y``/``feature_name`` columns.
+     - The same IST dataset directory passed to ``segger segment -i`` (see :doc:`quickstart`).
+       Only needed for segger v0.2.0 outputs, which predate inline ``x``/``y``/``feature_name``
+       columns.
    * - ``-o, --output-directory``
      - None
-     - Output directory. Required unless the only element being exported is ``spatialdata``.
+     - Directory the selected elements are written to. Required unless the only element being
+       exported is ``spatialdata``.
    * - ``--sdata``
      - None
-     - Existing SpatialData Zarr store to edit in place (required for the ``spatialdata``
-       element).
+     - Existing SpatialData Zarr store to edit in place, e.g. built with ``spatialdata-io`` (see
+       :doc:`quickstart`). Required for the ``spatialdata`` element.
    * - ``--sdata-transcripts-name``
      - transcripts
      - Existing points element in ``--sdata`` to append segger's columns to.
@@ -36,7 +44,7 @@ for the authoritative list.
      - Table element segger's AnnData is written to.
    * - ``--method``
      - delaunay
-     - Cell-polygon method for boundaries (``delaunay`` or ``convex_hull``).
+     - Cell-polygon method for boundaries (``delaunay`` or ``convex_hull``); recommended default.
    * - ``--chaikin-iterations``
      - 0
      - Chaikin corner-cutting iterations to round boundaries (``0`` disables).
