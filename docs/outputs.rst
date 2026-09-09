@@ -53,16 +53,21 @@ Outputs
       import polars as pl
       transcripts = pl.read_parquet("export/transcripts.parquet")
 
-``<sdata>.zarr``
-   Written with ``segger export spatialdata --sdata /path/to/sdata.zarr``: copies the given
-   SpatialData Zarr store into the output directory and adds segger's ``transcripts`` (points),
-   ``cell_boundaries`` (shapes), and ``table`` (the ``adata.h5ad`` cell x gene table) elements to
-   the copy. Requires the ``spatialdata`` extra (``pip install segger[spatialdata]``).
+``<sdata>.zarr`` (in place)
+   Written with ``segger export spatialdata --sdata /path/to/sdata.zarr``: edits the given
+   SpatialData store in place. Appends segger's per-transcript columns (``segger_cell_id``,
+   ``segger_similarity``, ``segger_similarity_threshold``, ``segger_converged``,
+   ``segger_filtered``, ``segger_seen``) to its existing ``transcripts`` points element, and adds
+   ``cell_boundaries_segger`` (shapes) and ``table_segger`` (table) elements. Element names are
+   configurable with ``--sdata-transcripts-name``, ``--sdata-cell-boundaries-name``, and
+   ``--sdata-table-name``. See :doc:`quickstart` for how to build the SpatialData store in the
+   first place (e.g. with ``spatialdata-io`` for Xenium).
 
    .. code-block:: python
 
-      import spatialdata
-      sdata = spatialdata.read_zarr("export/sdata.zarr")
-      sdata["transcripts"]      # assigned transcripts as points
-      sdata["cell_boundaries"]  # cell polygons as shapes
-      sdata["table"]            # cell x gene AnnData table
+      import spatialdata as sd
+
+      sdata = sd.read_zarr("/path/to/sdata.zarr")
+      sdata["transcripts"]             # vendor transcripts + segger's columns
+      sdata["cell_boundaries_segger"]  # segger's cell polygons
+      sdata["table_segger"]            # segger's cell x gene AnnData

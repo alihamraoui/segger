@@ -19,12 +19,21 @@ for the authoritative list.
      - Source transcripts directory. Only needed for segger v0.2.0 outputs, which predate inline
        ``x``/``y``/``feature_name`` columns.
    * - ``-o, --output-directory``
-     - *required*
-     - Output directory.
+     - None
+     - Output directory. Required unless the only element being exported is ``spatialdata``.
    * - ``--sdata``
      - None
-     - Existing SpatialData Zarr store to copy into the output directory and add elements to
-       (required for the ``spatialdata`` element).
+     - Existing SpatialData Zarr store to edit in place (required for the ``spatialdata``
+       element).
+   * - ``--sdata-transcripts-name``
+     - transcripts
+     - Existing points element in ``--sdata`` to append segger's columns to.
+   * - ``--sdata-cell-boundaries-name``
+     - cell_boundaries_segger
+     - Shapes element segger's cell boundaries are written to.
+   * - ``--sdata-table-name``
+     - table_segger
+     - Table element segger's AnnData is written to.
    * - ``--method``
      - delaunay
      - Cell-polygon method for boundaries (``delaunay`` or ``convex_hull``).
@@ -32,11 +41,10 @@ for the authoritative list.
      - 0
      - Chaikin corner-cutting iterations to round boundaries (``0`` disables).
    * - ``--include-all-transcripts``
-     - False
-     - Keep every cell-assigned transcript, ignoring the similarity threshold.
-   * - ``--min-similarity``
-     - None
-     - Fixed similarity threshold (0-1), overriding the per-gene threshold.
-   * - ``--min-transcripts``
+     - True
+     - Keep every transcript in the segmentation output, not just the ones segger's ``filtered``
+       column marks as kept.
+   * - ``--min-counts``
      - 10
-     - Minimum assigned transcripts a cell must have to be included.
+     - Minimum assigned transcripts a cell must have to be included (must be ``>= 3`` for
+       ``spatialdata``, since boundaries need ``>= 3`` points).
