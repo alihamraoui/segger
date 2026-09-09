@@ -7,6 +7,11 @@ Segger: Fast and accurate cell segmentation of imaging-based spatial transcripto
 
 Segger is a graph neural network model for fast, accurate cell segmentation of imaging-based spatial transcriptomics data. It resolves transcript-to-cell assignments even in dense, overlapping tissue regions.
 
+Contributing
+------------
+
+See `CONTRIBUTING.md <https://github.com/dpeerlab/segger/blob/main/CONTRIBUTING.md>`_.
+
 Citation
 --------
 

@@ -22,6 +22,10 @@ segger segment -i /path/to/your/ist/data/ -o /path/to/save/outputs/
 segger export  -s /path/to/save/outputs/segger_segmentation.parquet -o /path/to/export/
 ```
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Preprint
 
 TODO: link
