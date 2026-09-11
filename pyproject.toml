@@ -12,22 +12,28 @@ readme = "README.md"
 requires-python = ">=3.11"
 
 dependencies = [
-    "anndata",
-    "cyclopts",
-    "geopandas",
-    "numba",
-    "numpy",
-    "opencv-python",
-    "pandas",
-    "polars",
-    "pyarrow",
-    "scanpy",
-    "scipy",
-    "shapely",
+    "torch==2.5.*",
+    "torchvision==0.20.*",
+    "lightning",
+    "torch_geometric",
+    "torch-scatter",
+    "torch-sparse",
+    "cuspatial-cu12==24.10.*",
+    "cudf-cu12==24.10.*",
+    "cuml-cu12==24.10.*",
+    "cugraph-cu12==24.10.*",
+    "cupy-cuda12x>=12.2,<13.0",
+    "scanpy>=1.11.5",
+    "polars>=1.44.1",
+    "opencv-python-headless",
     "scikit-image",
-    "scikit-learn",
+    "geopandas",
+    "shapely",
     "tifffile",
-    "tqdm"
+    "typer",
+    "cyclopts",
+    "docstring_parser",
+    "numpy<2.0",
 ]
 
 [build-system]
@@ -36,6 +42,22 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/segger"]
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+
+[[tool.uv.index]]
+name = "nvidia"
+url = "https://pypi.nvidia.com"
+
+[tool.uv]
+index-strategy = "unsafe-best-match"
+find-links = ["https://data.pyg.org/whl/torch-2.5.1+cu121.html"]
+
+[tool.uv.extra-build-dependencies]
+torch-scatter = ["torch"]
+torch-sparse = ["torch"]
 
 [project.scripts]
 segger = "segger.cli.main:app"
