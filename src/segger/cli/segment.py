@@ -87,6 +87,11 @@ def segment(
         validator=_validate_output_directory,
     )] = registry.get_default("output_directory"),
 
+    platform: Annotated[str | None, registry.get_parameter(
+        "platform",
+        group=group_io,
+    )] = registry.get_default("platform"),
+
     transcripts_cell_id: Annotated[str | None, Parameter(
         help="Column in the transcripts file with cell assignments (e.g. a "
              "custom segmentation column). Defaults to the platform default.",
@@ -387,6 +392,7 @@ def segment(
         boundary_field_overrides['nucleus_filename'] = nucleus_boundaries_file
     datamodule = ISTDataModule(
         input_directory=input_directory,
+        platform=platform,
         transcript_field_overrides={'cell_id': transcripts_cell_id} if transcripts_cell_id else None,
         boundary_field_overrides=boundary_field_overrides or None,
         cells_representation_mode=cells_representation,
