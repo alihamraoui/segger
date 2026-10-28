@@ -76,7 +76,12 @@ def segment(
         group=group_io,
         validator=validators.Path(exists=True, dir_okay=True),
     )] = registry.get_default("output_directory"),
-    
+
+    platform: Annotated[str | None, registry.get_parameter(
+        "platform",
+        group=group_io,
+    )] = registry.get_default("platform"),
+
     # Cell Representation
     node_representation_dim: Annotated[int, Parameter(
         help="Number of dimensions used to represent each node type.",
@@ -346,6 +351,7 @@ def segment(
     from ..data import ISTDataModule
     datamodule = ISTDataModule(
         input_directory=input_directory,
+        platform=platform,
         cells_representation_mode=cells_representation,
         cells_embedding_size=node_representation_dim,
         cells_min_counts=cells_min_counts,
